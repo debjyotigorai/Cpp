@@ -1,4 +1,4 @@
-//Multi level, single, multiple inheritence
+//Multi level, single, multiple inheritence. Constructor and Destructor.
 #include <iostream>
 using namespace std;
 
