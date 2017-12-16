@@ -60,7 +60,10 @@ class arithk
 		{
 			cout << "\nArithmetic Operations";
 		}
-		~arithk();
+		~arithk()
+		{
+			cout << "This is destructor : " << endl;
+		}
 };
 
 class arith : public sub, public div, public mult
