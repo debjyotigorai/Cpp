@@ -2,7 +2,6 @@
 using namespace std;
 int main()
 {
-	int a=1;
-	for (; a<=20; a*=2)
-	cout << a;
+	int a[3]={2,3,6};
+	cout << a[1];
 }

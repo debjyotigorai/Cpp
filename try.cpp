@@ -4,6 +4,6 @@ using std::cout;
 int main()
 
 {
-	std::cout << " Hello! My name is Debjyoti Gorai.\n"
+	std::cout << " Hello! My name is Debjyoti Gorai. \a"
 	             " Hello! My name is Debjyoti Gorai.\n";	
 }

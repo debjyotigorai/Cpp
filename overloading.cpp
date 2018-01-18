@@ -9,17 +9,21 @@ void msg()
 
 void msg(int a)
 {
-	cout << "\nOne operator";
+	cout << "\nOne int parameter";
 }
 
 void msg (int a, int b)
 {
-	cout << "\nTwo operator";
+	cout << "\nTwo int parameters";
+}
+void msg (int a, float b)
+{
+	cout << "\nOne int and one float parameter.";
 }
 
 int main()
 {
 	msg();
 	msg(4);
-	msg(5,6);
+	msg(5,(int)6);
 }
