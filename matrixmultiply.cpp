@@ -4,49 +4,21 @@ using namespace std;
 
 int main()
 {
-	int h, i, j, k;
-	cout<< "Enter the dimensions of matrix one : ";
-	cin >> h >> i;
-	cout <<"\nEnter the dimension of matrix two : ";
-	cin >> j >> k;
-	if (i==j)
+	int a[2][2]={{2,4},{2,3}}, b[2][2]={{2,2},{2,2}}, c[2][2]={{0,0},{0,0}};
+	for(int i=0; i<2; i++)
 	{
-		int a[h][i], b[j][k], c[i][j], x, y, z;
-		cout << "\nEnter the values of matrix one : ";
-		for (x=0; x<h; x++)
+		for (int j=0; j<2; j++)
 		{
-			for (y=0; y<i; y++)
-			cin >> a[h][i];
-		}
-		cout << "\nEnter the values of matrix two : ";
-		for (x=0; x<j; x++)
-		{
-			for (y=0; y<k; y++)
-			cin >> a[h][i];
-		}
-		for (x=0; x<i; x++)
-		{
-			for (y=0; y<j; y++)
-			c[i][j]=0;
-		}
-		for (x=0; x<h; x++)
-		{
-			for (y=0; y<i; y++)
+			for (int k=0; k<2; k++)
 			{
-				for (int z=0; z<k; z++)
-				c[x][y]+=a[x][z]*b[z][y];
+				c[i][j]+=a[i][k]*b[k][i];
 			}
 		}
-		cout << "\nThe Multiplied matrix is : ";
-		for (x=0; x<i; x++)
-		{
-			for (y=0; y<j; y++);
-			cout << c[x][y] << "\t";
-			cout << endl;
-		}
-		
 	}
-	else
-	cout << "The above matrixes can't be multiplied.";
-	return main();
+	for (int i=0; i<2; i++)
+	{
+		for (int j=0; j<2; j++)
+		cout << c[i][j] << "\t";
+		cout << endl;
+	}
 }
