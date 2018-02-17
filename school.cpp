@@ -1,103 +1,19 @@
-#include <fstream>
 #include <iostream>
-#include <limits>
 #include <string>
-
-using namespace std;
-
-template <typename T>
-T get_input(const std::string &strQuery);
-
-std::string get_username();
-std::string get_password();
-void save_user(const std::string &username, const std::string &password);
-
-void login();
-void register_user();
-void main_menu();
 
 int main()
 {
-    main_menu();
-}
+    std::string s = "scott>=tiger";
+    std::string delim = ">=";
 
-template <typename T>
-T get_input(const std::string &strQuery)
-{
-    std::cout << strQuery << "\n> ";
-    T out = T();
-
-    while (!(std::cin >> out)) {
-        std::cin.clear();
-        std::cin.ignore(std::numeric_limits <std::streamsize>::max(), '\n');
-        std::cout << "Error!" "\n";
-        std::cout << strQuery << "\n> ";
-    }
-
-    return out;
-}
-
-std::string get_password()
-{
-    std::string password1 = get_input <std::string> ("Please enter your password.");
-    std::string password2 = get_input <std::string> ("Please re-enter your password.");
-
-    while (password1 != password2) {
-        std::cout << "Error! Passwords do not match." "\n";
-        password1 = get_input <std::string>("Please enter your password.");
-        password2 = get_input <std::string>("Please re-enter your password.");
-    }
-
-    return password1;
-}
-
-std::string get_username()
-{
-    std::string username = get_input <std::string>("Please enter a username.");
-    std::cout << "Username: \"" << username << "\"\n";
-
-    while (get_input <int>("Confirm? [0|1]") != 1) {
-        username = get_input <std::string>("Please enter a username.");
-        std::cout << "Username: \"" << username << "\"\n";
-    }
-
-    return username;
-}
-
-void login()
-{
-    std::cout << "You are being logged in!" "\n";
-}
-
-void main_menu()
-{
-    int choice = get_input <int>(
-        "Hello, Would you like to log in or register?" "\n"
-        "[1] Login" "\n"
-        "[2] Register" "\n"
-        "[3] Exit");
-
-    switch (choice)
+    auto start = 0U;
+    auto end = s.find(delim);
+    while (end != std::string::npos)
     {
-    case 1:
-        login();
-        break;
-    case 2:
-        register_user();
-        break;
+        std::cout << s.substr(start, end - start) << std::endl;
+        start = end + delim.length();
+        end = s.find(delim, start);
     }
-}
 
-void register_user()
-{
-    std::string username = get_username();
-    std::string password = get_password();
-    save_user(username, password);
-}
-
-void save_user(const std::string &username, const std::string &password)
-{
-    std::string filename = username + ".txt";
-    std::ofstream file(filename);
-    file << password << "\n";
+    std::cout << s.substr(start, end);
 }
