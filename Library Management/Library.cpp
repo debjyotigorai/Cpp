@@ -451,18 +451,21 @@ class BookIssueReturn
 					case 3:
 						{
 							fstream BIR("lib_issue_return.dat", ios::in);
+							fstream BIR2("lib_issue_return.dat", ios::in);
 							char tempstr[500], tempstr1[500];
 							if (BIR.getline(tempstr1, 500)!=NULL)
 							{
 								cout << "\n\n===================================================================================================\n\n";
-								while(BIR.getline(tempstr, 500)!=NULL)
+								while(BIR2.getline(tempstr, 500)!=NULL)
 								{
 									cout << tempstr << endl;
 								}
 								cout << "\n===================================================================================================";
+								BIR.close();
+								BIR2.close();
 							}
 							else
-							cout << "\nNo books are found to be deleted";
+							cout << "\nNo books have been issued or returned.";
 							break;
 						}
 					case 4:
@@ -498,6 +501,7 @@ class BookIssueReturn
 			fstream temp_id("temp_id.dat", ios::out|ios::app);
 			fstream bd_out("lib_book_details.dat", ios::in);
 			fstream ir("issue_return.dat", ios::in);
+			fstream ir2("issue_return.dat", ios::out|ios::app);
 			char temp_copy[500], stu_name[50], book_id[10]; 
 			cout << "\nEnter serial number : ";
 			cin >> serial;
@@ -513,6 +517,7 @@ class BookIssueReturn
 			cin.sync();
 			temp_id2.getline(book_id, 10);
 			temp_id2.close();
+			remove("temp_id.dat");
 			len=strlen(book_id);
 			while(bd_out.getline(temp_copy, 500)!=NULL)
 			{
@@ -521,7 +526,7 @@ class BookIssueReturn
 					int len2=0;
 					for (i=len; temp_copy[i]!='\0'; i++)
 					len2++;
-					for (i=len, j=0; temp_copy[i]!='\0', j<len2; i++, j++)
+					for (i=len+4, j=0; temp_copy[i]!='\0', j<len2; i++, j++)
 					book_name_copy[j]=temp_copy[i];
 				}
 			}
@@ -529,37 +534,37 @@ class BookIssueReturn
 			{
 				cin.sync();
 				bi_in << " " << serial << "    " << stu_name << "    " << book_name_copy << "    " << _strdate(date1) << endl;
-				ir << book_name_copy << endl;
+				ir2 << book_name_copy << endl;
 				bi_in.close();
 				bd_out.close();
 				ir.close();
+				ir2.close();
 				remove("temp_id.dat");
 				remove("temp_id2.dat");
 				cout << "\n....Book Issued....";
 			}
 			else
 			{
-				int len=0;
-				while (ir.getline(str_copy, 500)!=NULL)
+				int flag=0;
+				char temp[500];
+				while (ir.getline(temp, 500)!=NULL)
 				{
-					if (strstr(str_copy, book_name_copy)!=NULL)
-					{
-						cout << "\nBook has already been issued to someone.";
-						break;
-					}
+					if (strstr(temp, book_name_copy)==NULL)
+						continue;
 					else
 					{
-						
+						flag=1;
+						break;
 					}
 				}
-				if (len==0)
+				if (flag==0)
 				{
 					cin.sync();
 					bi_in << " " << serial << "    " << stu_name << "    " << book_name_copy << "    " << _strdate(date1) << endl;
-					fstream ir2("issue_return.dat", ios::out|ios::app);
 					ir2 << book_name_copy << endl;
 					bi_in.close();
 					bd_out.close();
+					ir.close();
 					ir2.close();
 					remove("temp_id.dat");
 					remove("temp_id2.dat");
@@ -567,13 +572,14 @@ class BookIssueReturn
 				}
 				else
 				{
-					cout << "\nBook has already been isuued to soneone.";
 					bi_in.close();
 					bd_out.close();
+					ir.close();
+					ir2.close();
 					remove("temp_id.dat");
 					remove("temp_id2.dat");
-				}
-				ir.close();
+					cout << "\nBook not available for issue.";
+				}		
 			}
 		}
 		
@@ -581,8 +587,6 @@ class BookIssueReturn
 		{
 			char temp_str[500];
 			char date2[10];
-			fstream br_out("lib_issue_return.dat", ios::in);
-			fstream temp_return("temp_return.dat", ios::out|ios::app);
 			cout << "\nRETURN MENU";
 			cout << "\n1. Return by serial no.";
 			cout << "\n2. Return by full book name";
@@ -593,40 +597,70 @@ class BookIssueReturn
 			{
 				case 1:
 					{
-						int len=0, sl;
-						char serial[10];
-						cout << "\nEnter the serial no. : ";
-						cin >> sl;
-						fstream temp("temp.dat", ios::out|ios::in|ios::app);
+						int serial;
+						cout << "\nEnter serial no of the issue return list : ";
+						cin >> serial;
+						fstream ser("temp.dat", ios::out|ios::app);
 						cin.sync();
-						temp << " " << sl << "  " << endl;
+						ser << " " << serial << "    ";
+						ser.close();
+						char serial_copy[50];
+						fstream ser1("temp.dat", ios::in);
 						cin.sync();
-						temp.getline(serial, 10);
-						while(br_out.getline(temp_str, 500)!=NULL)
+						ser1.getline(serial_copy, 50);
+						ser1.close();
+						remove("temp.dat");
+						int len=0;
+						len=strlen(serial_copy);
+						fstream book_return("lib_issue_return.dat", ios::in);
+						char bk_return[500], temp_copy[500];
+						while(book_return.getline(bk_return, 500)!=NULL)
 						{
-							if (strstr(temp_str, serial)!=NULL)
-							{
-								cin.sync();
-								temp_return << temp_str << "    " << _strdate(date2) << endl;
-							}
+							if (strstr(bk_return, serial_copy)!=NULL)
+							strcpy(temp_copy, bk_return);
+						}
+						book_return.close();
+						fstream check("issue_return.dat", ios::in);
+						char str_cpy[500];
+						int flag=0;
+						while(check.getline(str_cpy, 500)!=NULL)
+						{
+							if (strstr(temp_copy, str_cpy)==NULL)
+							continue;
 							else
 							{
-								cin.sync();
-								temp_return << temp_str << endl;
+								flag=1;
+								break;
 							}
 						}
-						temp.close();
-						remove("temp.dat");
-						br_out.close();
-						remove("lib_issue_return.dat");
-						temp_return.close();
-						rename("temp_return.dat", "lib_issue_return.dat");
-						cout << "\n....Book Returned....";
+						check.close();
+						if (flag==1)
+						{
+							fstream bk_rn("lib_issue_return.dat", ios::in);
+							fstream bo_return("temp_ir.dat", ios::out|ios::app);
+							while(bk_rn.getline(bk_return, 500)!=NULL)
+							{
+								if (strstr(bk_return, serial_copy)==NULL)
+								bo_return << bk_return << endl;
+								else
+								bo_return << bk_return << "    " << _strdate(date2) << endl;
+							}
+							bk_rn.close();
+							bo_return.close();
+							remove("lib_issue_return.dat");
+							rename("temp_ir.dat", "lib_issue_return.dat");
+						}
+						else
+						{
+							cout << "\nNo such book have been issued.";
+						}
 						break;
 					}
 					
 				case 2:
 					{
+						fstream br_out("lib_issue_return.dat", ios::in);
+						fstream temp_return("temp_return.dat", ios::out|ios::app);
 						int flag=0;
 						char temp_bn[50], temp[500], temp1[500];
 						fstream ir("issue_return.dat", ios::in);
