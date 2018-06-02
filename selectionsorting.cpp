@@ -8,9 +8,9 @@ int main()
 	{
 		cin >> a[i];
 	}
-	for (i=0; i<10; j++)
+	for (i=0; i<8; j++)
 	{
-		for (j=++i; j<10; j++)
+		for (j=i+1; j<9; j++)
 		{
 			if (a[i]>a[j])
 			{
