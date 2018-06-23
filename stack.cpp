@@ -2,7 +2,7 @@
 #include <iostream>
 using namespace std;
 
-int push(int arr[], int &tos, int n)
+int push(int arr[], int tos, int n)
 {
 	int item;
 	if (tos==n-1)
@@ -17,7 +17,7 @@ int push(int arr[], int &tos, int n)
 	return tos;
 }
 
-int pop(int arr[], int &tos)
+int pop(int arr[], int tos)
 {
 	int item;
 	if (tos==-1)
@@ -36,7 +36,7 @@ void display(int arr[], int tos)
 	if (tos==-1)
 		cout << "\nStack is empty. Aborting !!!";
 	else
-		for (int i=0; i<=tos; i++)
+		for (int i=tos; i>=0; i--)
 			cout << endl << arr[i];
 }
 
