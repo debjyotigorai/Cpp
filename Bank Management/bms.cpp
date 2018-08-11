@@ -105,7 +105,7 @@ void login()
 	fin.read((char *)&ach, sizeof(ach));
 	while(!fin.eof())
 	{
-		if((ach.return_username()==temp_username)&&(ach.return_password()==temp_password))
+		if((ach.return_username().compare(temp_username)==0)&&(ach.return_password().compare(temp_password)==0))
 		{
 			flag=1;
 			break;
