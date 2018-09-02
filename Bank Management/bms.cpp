@@ -15,62 +15,63 @@ using namespace std;
 
 class account_holder
 {
-	string username, password, status;
+	string username, password;
+	char status;
 	public: 
-		string return_status()
+		char return_status()
 		{
-			cin.sync();
 			return status;
 		}
 		string return_username()
 		{
-			cin.sync();
 			return username;
 		}
 		string return_password()
 		{
-			cin.sync();
 			return password;
 		}
 		void creation_2()
 		{
 			cout << "\nCreate a username: ";
-			cin.sync();
+			cin >> ws;
 			getline(cin, username);
 			cout << "\nCreate a password: ";
+			cin >> ws;
 			getline(cin, password);
-			status="Y";
+			status='Y';
 			cout << "\n....ACCOUNT CREATION SUCCESSFULL....";
 		}
 };
 
 class account_creation_view
 {
-	string name, email, address, guardian_name;
-	long double accno, phoneno, birth_year, balance;
+	string name, email, address, guardian_name, accno, phoneno;
+	double birth_year, balance;
 	public:
 		void creation()
 		{
 			cout << "\nPERSONAL DETAILS: ";
 			cout << "\nEnter name: ";
-			cin.sync();
+			cin >> ws;
 			getline(cin, name);
 			cout << "\nEnter year of birth: ";
 			cin >> birth_year;
 			cout << "\nEnter residential address: ";
-			cin.sync();
+			cin >> ws;
 			getline(cin, address);
 			cout << "\nEnter your's father/ mother's name: ";
-			cin.sync();
+			cin >> ws;
 			getline(cin, guardian_name);
 			cout << "\nEnter your phone number: ";
-			cin >> phoneno;
+			cin >> ws;
+			getline(cin, phoneno);
 			cout << "\nEnter your email address: ";
-			cin.sync();
+			cin >> ws;
 			getline(cin, email);
 			cout << "\nBANK ACCOUNT CREATION: ";
 			cout << "\nEnter your account number: ";
-			cin >> accno;
+			cin >> ws;
+			getline(cin, accno);
 			cout << "\nEnter your deposit balance: ";
 			cin >> balance;	
 		}
@@ -92,30 +93,30 @@ class account_creation_view
 
 void login()
 {
+	//Function for login using username and password
 	int flag=0;
 	account_holder ach;
 	string temp_username, temp_password;
 	cout << "\nEnter your username: ";
-	cin.sync();
+	cin >> ws;
 	getline(cin, temp_username);
 	cout << "\nEnter your password: ";
-	cin.sync();
+	cin >> ws;
 	getline(cin, temp_password);
 	fstream fin("account_holder.dat", ios::in);
 	fin.read((char *)&ach, sizeof(ach));
 	while(!fin.eof())
 	{
-		if((ach.return_username().compare(temp_username)==0)&&(ach.return_password().compare(temp_password)==0))
+		if((ach.return_username()==temp_username)&&(ach.return_password()==temp_password))
 		{
 			flag=1;
 			break;
 		}
-		fin.read((char *)&ach, sizeof(ach));
-			
+		fin.read((char *)&ach, sizeof(ach));		
 	}
 	if (flag==1)
 	{
-		if (ach.return_status()=="Y")
+		if (ach.return_status()=='Y')
 			{
 				chdir(ach.return_username().c_str());
 				cout << "\nLogin Successfull.";
@@ -124,7 +125,7 @@ void login()
 				fin.read((char *)&acv, sizeof(acv));
 				acv.view();
 			}
-			else if (ach.return_status()=="N")
+		else if (ach.return_status()=='N')
 			{
 				cout << "\nAccount has been closed by you or by the bank.";
 			}
@@ -135,8 +136,9 @@ void login()
 
 void account_write()
 {
-	account_creation_view obj;
+	//Function to write username and password into a file and account details into another file
 	account_holder obj1;
+	account_creation_view obj;
 	obj.creation();
 	obj1.creation_2();
 	fstream fout("account_holder.dat", ios::out|ios::app);
@@ -144,11 +146,11 @@ void account_write()
 	fout.close();
 	mkdir(obj1.return_username().c_str());
 	chdir(obj1.return_username().c_str());
-	fstream fout1("account_details.dat", ios::out);
-	fout.write((char *)&obj1, sizeof(obj1));
-	fstream fout2("account_statement.dat", ios::out);
+	fstream fout1("account_details.dat", ios::out|ios::app);
+	fout1.write((char *)&obj, sizeof(obj));
+	//fstream fout2("account_statement.dat", ios::out);
 	fout1.close();
-	fout2.close();
+	//fout2.close();
 	chdir("..\\");
 }
 class ADMINISTRATOR_MENU
@@ -189,11 +191,13 @@ class BANKING_MENU
 
 void about()
 {
+	//Function to see the about section of the program
 	fstream about_out("bms_about.txt", ios::in);
-	char about_str[500];
+	string about_str;
 	cout << "\n\n==========================================================================================\n\n";
-	while (about_out.getline(about_str, 500)!=NULL)
+	while (!about_out.eof())
 	{
+		getline(about_out, about_str);
 		cout << about_str << endl;
 	}
 	cout << "\n==========================================================================================\n";
