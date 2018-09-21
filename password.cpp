@@ -4,18 +4,35 @@ using namespace std;
 
 int main()
 {
-	char s[10] = { 0 };
-    int i;
-    for (i = 0; i < 10;i++) 
-	{
-        s[i] = _getch();
-		_putch('*');
-        if (s[i] == 13) 
-		break;
-    };
-    if (s[]=={'p','r','o','j','e','c','t'})
-    cout << "\nValid";
-    getchar();
-    return 0;
+	char password[100];
+	int i = 0;
+    char a;
+    while(1)
+    {
+        a=getch();
+        if((a>='a'&&a<='z')||(a>='A'&&a<='Z')||(a>='0'&&a<='9'))
+        {
+            password[i]=a;
+            ++i;
+            cout <<"*";
+        }
+        if(a=='@'||a=='#'||a=='?'||a==' '||a=='%'||a=='!'||a=='-'||a=='_'||a=='$'||a=='&'||a=='^'||a=='*')
+        {
+        	password[i]=a;
+        	++i;
+        	cout << "*";
+		}
+        if(a=='\b'&&i>=1)
+        {
+            cout << "\b \b";
+            --i;
+        }
+        if(a=='\r')
+        {
+            password[i]='\0';
+            break;
+        }
+    }
+    cout << endl << password;
 
 }
