@@ -118,6 +118,14 @@ class account_holder
 			cin.getline(answer, 100);
 			cout << "\n....ACCOUNT CREATION SUCCESSFULL....";
 		}
+	void achview()
+	{
+		cout << "\nusername: " << username
+		     << "\npassword: " << password
+		     << "\nstatus: " << status
+		     << "\nquestion: " << question
+		     << "\nanswer: " << answer;
+	}
 };
 
 class account_creation_view
@@ -423,7 +431,7 @@ class ADMINISTRATOR_MENU
 			cout << "\nAdmin Menu: "
 				 << "\n1. View all users."
 				 << "\n2. Delete a user account."
-				 << "\n3. Create a new user acoount."
+				 << "\n3. Create a new user account."
 				 << "\n4. Close a user's account."
 				 << "\n5. Edit a user's account."
 				 << "\n6. Create a bank branch."
@@ -509,6 +517,7 @@ int main()
 					 << "\n2. Administrator Menu."
 					 << "\n3. About"
 					 << "\n4. Exit Program."
+					 << "\n5. Read account holder."
 					 << "\nENTER YOUR CHOICE: ";
 				cin >> choice;
 				switch(choice)
@@ -518,11 +527,26 @@ int main()
 						break;
 						
 					case 2:
-					
+					{
+						ADMINISTRATOR_MENU am;
+						am.admin_menu();
+					}
 					case 3:
 						about();
 						break;
 					
+					case 5:
+					{
+						account_holder ach;
+						fstream fin("account_holder.dat", ios::in);
+						while(!fin.eof())
+						{
+							fin.read((char *)&ach, sizeof(ach));
+							ach.achview();
+						}
+						fin.close();
+						break;
+					}
 					case 4: 
 						Sleep (500);
 						cout << "\n\nExiting ";
