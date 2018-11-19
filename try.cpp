@@ -1,11 +1,12 @@
+#include <ctime>
 #include <iostream>
-#include <conio.h>
 using namespace std;
-
-int main()
+int main() 
 {
-	int getch;
-	cout << "\nEnter value: ";
-	cin >> getch;
-	cout << "\nValue: " << getch;
+    time_t t = time(0);   // get time now
+    tm* now = localtime(&t);
+    cout << now->tm_mday << '-' 
+    << (now->tm_mon + 1) << '-'
+    << (now->tm_year + 1900)
+    << "\n";
 }

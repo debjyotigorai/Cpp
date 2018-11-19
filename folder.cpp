@@ -1,18 +1,11 @@
 #include <iostream>
-#include <direct.h>
-#include <string>
-#include <fstream>
-using namespace std;
-
-
+#include <cstdint>
+#include <filesystem>
+namespace fs = std::filesystem;
 int main()
 {
-	char foldername[40];
-	cout << "\nEnter foldername: ";
-	cin.sync();
-	cin.getline(foldername, 40);
-	mkdir(foldername);
-	chdir(foldername);
-	
+    fs::path dir = fs::temp_directory_path();
+    fs::create_directories(dir / "abcdef/example");
+    std::uintmax_t n = fs::remove_all(dir / "abcdef");
+    std::cout << "Deleted " << n << " files or directories\n";
 }
-
