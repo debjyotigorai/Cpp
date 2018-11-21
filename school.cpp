@@ -1,35 +1,23 @@
 #include <iostream>
+#include <fstream>
+#include <stdlib.h>
+#include <time.h>
 using namespace std;
-
-class test
-{
-	int a;
-	public:
-		void view()
-		{
-			cout << "\nvalue: " << a;
-		}
-		void input()
-		{
-			cout << "\nEnter value: ";
-			cin >> a;
-		}
-		test(const test &t)
-		{
-			a=t.a;
-		}
-		test()
-		{
-			
-		}
-		
-};
-
+/*
 int main()
 {
-	test c;
-	c.input();
-	c.view();
-	test t(c);
-	c.view();
+	int c=0;
+	time_t t;
+  	srand((unsigned)time(&t));
+  	while(c<100)
+  	{
+  		double accno=(rand() % (1000000-100000)) + 100000;
+  		c++;
+  		cout << accno << endl;
+	}
+}*/
+int main()
+{
+	fstream fin("school.dat", ios::in|ios::out);
+	fin << "hello";
 }
