@@ -1,94 +1,107 @@
-//Dynamic Queue
 #include <iostream>
 using namespace std;
 
 struct node
 {
-	int item;
+	int value;
 	node *link;
-}*front, *rear, *temp, *ptr;
+};
 
-void insert_node()
+class queue
 {
-	ptr=new node;
-	cout << "\nEnter value for item: ";
-	cin >> ptr->item;
-	ptr->link=NULL;
-	if (ptr==NULL)
+	node *rear, *front;
+	public:
+		queue()
+		{
+			rear=front=NULL;
+		}
+	void insert();
+	void remove();
+	void display();
+};
+
+void queue::insert()
+{
+	node *ptr;
+	ptr = new node;
+	cout << "\nEnter value: ";
+	cin >> ptr->value;
+	ptr->link = NULL;
+	if (rear==NULL)
 	{
-		cout << "\nNo free space available.";
+		rear=front=ptr;
 	}
 	else
 	{
-		if (front==NULL)
-			front=rear=ptr;
-		else
-		{
-			rear->link=ptr;
-			rear=ptr;
-		}
+		rear->link=ptr;
+		rear=ptr;
 	}
 }
 
-void delete_node()
+void queue::remove()
 {
-	if (front==rear&&front!=NULL&&rear!=NULL)
-	{
-		cout << "Deleted " << front->item << " from queue.";
-		delete front;
-		front=rear=NULL;
-	}
-	else if(front==NULL)
-	{
+	if (rear==NULL)
 		cout << "\nQueue underflow.";
+	else if (rear==front)
+	{
+		cout << "\nDeleting " << front->value << " from queue.";
+		delete rear;
+		rear=front=NULL;
 	}
 	else
 	{
+		node *temp;
 		temp=front;
 		front=front->link;
-		cout << "Deleted " << temp->item << " from queue.";
+		cout << "\nDeleting " << temp->value << " from queue.";
 		delete temp;
 	}
 }
 
-void display_node()
+void queue::display()
 {
-	node *display;
-	if (front==NULL)
-		cout << "\nStack Underflow.";
+	if (rear==NULL)
+		cout << "\nQueue underflow.";
 	else
 	{
-		display=front;
-		cout << display->item << endl;
-		while(display->link!=NULL)
+		node *temp;
+		temp=front;
+		while(1)
 		{
-			display=display->link;
-			cout << display->item << endl;
+			cout << temp->value << "\t";
+			if(temp->link==NULL)
+				break;
+			else
+				temp=temp->link;
 		}
 	}
 }
 
 int main()
 {
-	front=rear=NULL;
+	queue q;
+	int choice;
 	while(1)
 	{
-		cout << "\nQUEUE MENU: "
-		 << "\n1. Insert a node."
-		 << "\n2. Delete a node."
-		 << "\n3. Display queue."
-		 << "\nEnter correct choice: ";
-		int choose;
-		cin >> choose;
-		switch(choose)
+		cout << "\nMenu: "
+			 << "\n1. Insert node."
+			 << "\n2. Delete node."
+			 << "\n3. Display queue."
+			 << "\nEnter choice: ";
+		cin >> choice;
+		switch(choice)
 		{
-			case 1: insert_node();
-					break;
-			case 2: delete_node();
-					break;
-			case 3: display_node();
-					break;
-			default: cout << "\nWrong choice entered. Try again!";
+		case 1: 
+			q.insert();
+			break;
+		case 2:
+			q.remove();
+			break;
+		case 3:
+			q.display();
+			break;
+		default:
+			cout << "\nWrong choice! Please try again.";
 		}
 	}
 }
